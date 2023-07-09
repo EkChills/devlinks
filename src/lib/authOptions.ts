@@ -75,6 +75,4 @@ export const authOptions:AuthOptions = {
     newUser:'/register'
   },
   secret: process.env.SECRET,
-
-
 }
