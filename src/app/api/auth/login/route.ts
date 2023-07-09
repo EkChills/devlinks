@@ -7,6 +7,8 @@ import { signJwt } from "@/lib/jwt";
 export async function POST(req:NextRequest) {
   try {
     const body:UserBody = await req.json();
+    console.log(body);
+    
   
     if(!body.email || !body.password) {
       return new NextResponse(`required field email or password missing in the request body`, {status:422})
