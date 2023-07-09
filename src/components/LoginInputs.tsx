@@ -32,6 +32,8 @@ const LoginInputs = () => {
     try {
       const callback = await signIn('credentials', {email, password, redirect:false})
       if(callback?.error) {
+        console.log(callback.error);
+        
        return toast({
           title:"something went wrong"
         })
