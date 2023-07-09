@@ -1,10 +1,12 @@
-interface Props {
+import { authOptions } from "@/lib/authOptions"
+import { getServerSession } from "next-auth"
 
-}
-
-const SignUpPage = ({}:Props) => {
+const SignUpPage = async() => {
+  const session = await getServerSession(authOptions)
   return (
-    <div>Page</div>
+    <div>
+      {session?.accessToken && <pre>{session.accessToken}</pre>}
+    </div>
   )
 }
 

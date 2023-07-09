@@ -9,5 +9,11 @@ export const BasicSchemaWithPass = BasicSchema.extend({
   confirmPassword:z.string().trim().min(8, {message:'password must be minimum of 8 characters'})
 })
 
+export const FormLinkSchema =z.object({
+  link:z.string().trim().min(5, {message:'please check the URL'})
+}) 
+  
+export type FormLink = z.infer<typeof FormLinkSchema>
+
 export type UserType = z.infer<typeof BasicSchemaWithPass>
 

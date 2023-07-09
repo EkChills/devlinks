@@ -1,5 +1,8 @@
+import { Toaster } from '@/components/ui/toaster'
 import './globals.css'
 import { Inter, Instrument_Sans } from 'next/font/google'
+import ReduxProvider from '@/components/providers/ReduxTProvider'
+import RtkProvider from '@/components/providers/ReactQueryProvider'
 
 const InstrumentSans = Instrument_Sans({ subsets: ['latin'] })
 
@@ -15,7 +18,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={InstrumentSans.className}>{children}</body>
+      <body className={`${InstrumentSans.className} bg-[#FAFAFA]`}>
+        <RtkProvider>
+        <ReduxProvider>
+        {children}
+        </ReduxProvider>
+        </RtkProvider>
+        <Toaster />
+      </body>
     </html>
   )
 }
