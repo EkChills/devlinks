@@ -42,7 +42,13 @@ export async function POST (req:NextRequest) {
     }
 
     const reformedLinks = links.map((link) => ({id:link.id, platform:link.platform, url:link.link, userid:session.userId}))
-    const deletedLinks = await prisma.link.deleteMany()
+    const deletedLinks = await prisma.link.deleteMany({
+      where:{
+        user:{
+          id:session.userId
+        }
+      }
+    })
     const postedLinks = await prisma.link.createMany({
       data:[
         ...reformedLinks

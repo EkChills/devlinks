@@ -86,7 +86,7 @@ export default function CustomizeLinks() {
           <p className="leading-[150%] text-[#737373] font-medium text-base max-w-[18.4375rem] sm:max-w-[41rem]">Add/edit/remove links below and then share all your profiles with the world!</p>
         </div>
         <button className='mt-[2.5rem] text-base font-semibold hover:bg-[#EFEBFF] transition-colors duration-500 text-[#633CFF] leading-[150%] py-[.69rem] w-full rounded-[.5rem] text-center border border-[#633CFF] ' onClick={addNewLink}>Add new link</button>
-        {links.length === 0 ? <EmptyLinks /> : <AllLinks register={register} errors={errors} linkItems={data?.links as Link[]} />}
+        { !isFetching && links.length === 0 ? <EmptyLinks /> : <AllLinks register={register} errors={errors} linkItems={data?.links as Link[]} />}
         <div className='  border-[#D9D9D9] border-t-[0.0625rem] flex flex-col absolute left-[0] right-[0] mt-[1.5rem] py-[1rem] xl:py-[1.5rem] sm:px-[2.5rem] px-[1.5rem] justify-center' >
           <button disabled={links.length === 0} className='leading-[150%] rounded-[.5rem] bg-[#633CFF] text-base text-[white] font-semibold py-[.69rem] w-full text-center xl:ml-auto xl:w-auto xl:px-[1.69rem] disabled:opacity-[.25] flex items-center justify-center'>
         

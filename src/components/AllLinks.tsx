@@ -9,7 +9,7 @@ import { FormLink } from "@/lib/types/formTypes"
 
 interface Props {
   linkItems:Link[];
-  register:UseFormRegister<FormLink>;
+  register:UseFormRegister<any>;
   errors:FieldErrors<{}>
 }
 
