@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 import { signJwt } from "@/lib/jwt";
 
 export async function POST(req:NextRequest) {
-
+  try {
     const body:UserBody = await req.json();
     console.log(body);
     
@@ -20,7 +20,7 @@ export async function POST(req:NextRequest) {
       }
     })
 
-    if(!user) {   
+    if(!user) {
       return new NextResponse('user does not exist', {status:404})
     }
 
@@ -31,4 +31,9 @@ export async function POST(req:NextRequest) {
     const accessToken = signJwt({email:user.email})
     return NextResponse.json({...user, accessToken})
     
-  } 
+  } catch (error) {
+    console.log(error);
+    return new NextResponse(`${error}`, {status:500})
+    
+  }
+}
