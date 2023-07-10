@@ -8,7 +8,7 @@ import { User } from '@prisma/client';
 
 export const baseUrl =
 process.env.NODE_ENV === "production"
-  ? "https://dev-links-d.vercel.app"
+  ? "https://devlinks-eosin.vercel.app"
   : "http://localhost:3000";
 
 export const authOptions:AuthOptions = {
