@@ -29,6 +29,7 @@ export async function POST(req:NextRequest) {
     }
     
     const accessToken = signJwt({email:user.email})
+    
     return NextResponse.json({...user, accessToken})
     
   } catch (error) {
