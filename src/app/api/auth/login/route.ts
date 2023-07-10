@@ -1,37 +1,40 @@
-import { NextResponse } from "next/server"
-import { prisma } from "../../../../../prisma/prisma"
+import { NextRequest, NextResponse } from "next/server";
+import { UserBody } from "../register/route";
+import { prisma } from "../../../../../prisma/prisma";
 import bcrypt from 'bcrypt'
-import { signJwt, verifyJwt } from "@/lib/jwt"
+import { signJwt } from "@/lib/jwt";
 
-interface RequestBody {
-  name:string,
-  email:string,
-  password:string,
-}
-
-export async function POST(request:Request) {
-  const body:RequestBody = await request.json()
-
-  const {email, password} = body
+export async function POST(req:NextRequest) {
+  try {
+    const body:UserBody = await req.json();
+    console.log(body);
+    
   
-
-  if(!email || !password) {
-    return new NextResponse('must fill all inputs', {status:400})
-  }
-
-
-  const user = await prisma.user.findUnique({
-    where:{
-      email:email
+    if(!body.email || !body.password) {
+      return new NextResponse(`required field email or password missing in the request body`, {status:422})
     }
-  })
   
-  console.log({user});
-  
-  if(!user || !(await bcrypt.compare(password, user.password!)) ) {
-    return new NextResponse('user not found', {status:404})
-  }
+    const user = await prisma.user.findUnique({
+      where: {
+        email:body.email
+      }
+    })
 
-  const accessToken = signJwt({email:user.email})
-  return NextResponse.json({...user, accessToken})
+    if(!user) {
+      return new NextResponse('user does not exist', {status:404})
+    }
+
+    if(!(await bcrypt.compare(body.password, user.password!))) {
+      return new NextResponse('incorrect password', {status:401})
+    }
+    
+    const accessToken = signJwt({email:user.email})
+    
+    return NextResponse.json({...user, accessToken})
+    
+  } catch (error) {
+    console.log(error);
+    return new NextResponse(`${error}`, {status:500})
+    
+  }
 }
