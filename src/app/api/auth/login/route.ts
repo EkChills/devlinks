@@ -27,6 +27,9 @@ export async function POST(req:NextRequest) {
     if(!(await bcrypt.compare(body.password, user.password!))) {
       return new NextResponse('incorrect password', {status:401})
     }
+
+    console.log('through');
+    
     
     const accessToken = signJwt({email:user.email})
     
