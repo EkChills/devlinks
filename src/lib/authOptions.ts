@@ -25,7 +25,7 @@ export const authOptions:AuthOptions = {
         password:{label:"Password", type:"password"}
       },
       async authorize(credentials){
-        const res = await fetch(`/api/auth/login`, {
+        const res = await fetch(`${baseUrl}/api/auth/login`, {
           method:"POST",
           body:JSON.stringify(
             {
