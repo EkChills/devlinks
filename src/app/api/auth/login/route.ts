@@ -23,18 +23,12 @@ export async function POST(req:NextRequest) {
     if(!user) {
       return new NextResponse('user does not exist', {status:404})
     }
+
+    // if(!(await bcrypt.compare(body.password, user.password!))) {
+    //   return new NextResponse('incorrect password', {status:401})
+    // }
     
     const accessToken = signJwt({email:user.email})
-    console.log(accessToken);
-    
-
-    if(!(await bcrypt.compare(body.password, user.password!))) {
-      return new NextResponse('incorrect password', {status:401})
-    }
-
-    console.log('through');
-    
-    
     
     return NextResponse.json({...user, accessToken})
     
