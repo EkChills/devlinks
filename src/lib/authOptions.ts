@@ -19,7 +19,7 @@ export const authOptions:AuthOptions = {
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
     CredentialsProvider({
-      id:'credentials',
+      id:"credentials",
       name:"credentials",
       credentials:{
         email:{label:"Email", type:"text", placeholder:"damned@gmail.com"},
@@ -75,5 +75,4 @@ export const authOptions:AuthOptions = {
     signIn:'/login',
     newUser:'/register'
   },
-  secret: process.env.SECRET,
 }
