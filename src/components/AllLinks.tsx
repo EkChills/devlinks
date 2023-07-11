@@ -19,7 +19,7 @@ const AllLinks = ({linkItems, register, errors}:Props) => {
   return (
     <div className=" rounded-[.75rem] mt-[1.5rem] flex flex-col  pt-[3rem] pb-[3rem] space-y-[1.5rem]">
       {links.map((linkItem, index) => {
-        const {id, link, platform, url} = linkItem 
+        const {id, platform, url} = linkItem 
         
         return <SingleLink id={id} link={url as string} key={id} register={register} errors={errors} platform={platform} linkIndex={index} />
       })}
