@@ -1,5 +1,6 @@
 import { authOptions } from "@/lib/authOptions"
 import { prisma } from "../../../../prisma/prisma"
+import  {v4 as uuid} from 'uuid'
 import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
 import { Link } from "@/store/features/linksSlice"
@@ -41,7 +42,9 @@ export async function POST (req:NextRequest) {
       return new NextResponse('bad request', {status:400})
     }
 
-    const reformedLinks = links.map((link) => ({id:link.id, platform:link.platform, url:link.link, userid:session.userId}))
+    const reformedLinks = [...links]
+    console.log(reformedLinks);
+    
     const deletedLinks = await prisma.link.deleteMany({
       where:{
         user:{
@@ -49,11 +52,20 @@ export async function POST (req:NextRequest) {
         }
       }
     })
+
     const postedLinks = await prisma.link.createMany({
       data:[
         ...reformedLinks
       ]
     })
+
+    // const [deleted, posted] = await Promise.allSettled([deletedLinks, postedLinks])
+    // console.log(deleted)
+    // console.log(posted);
+    
+    
+
+  
 
     if(!deletedLinks || !postedLinks) {
       return new NextResponse('something went wrong:cant delete or fetch create ', {status:500})
@@ -67,3 +79,4 @@ export async function POST (req:NextRequest) {
   }
 
 }
+

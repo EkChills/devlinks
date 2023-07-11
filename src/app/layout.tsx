@@ -3,6 +3,7 @@ import './globals.css'
 import { Inter, Instrument_Sans } from 'next/font/google'
 import ReduxProvider from '@/components/providers/ReduxTProvider'
 import RtkProvider from '@/components/providers/ReactQueryProvider'
+import NextSessionPr from '@/components/providers/SessionProvider'
 
 const InstrumentSans = Instrument_Sans({ subsets: ['latin'] })
 
@@ -19,11 +20,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${InstrumentSans.className} bg-[#FAFAFA]`}>
+        <NextSessionPr>
         <RtkProvider>
         <ReduxProvider>
         {children}
         </ReduxProvider>
         </RtkProvider>
+        </NextSessionPr>
         <Toaster />
       </body>
     </html>

@@ -15,6 +15,8 @@ import {v4 as uuid} from 'uuid'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from './ui/use-toast'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
+import { authOptions } from '@/lib/authOptions'
 
 const getLinks = async():Promise<{links:Link[]}> => {
   const res = await fetch('/api/links')
@@ -29,6 +31,7 @@ const getLinks = async():Promise<{links:Link[]}> => {
 
 export default function CustomizeLinks() {
   const {register,handleSubmit, formState:{errors}} = useForm()
+  const {data:session, status} = useSession()
   const dispatch = useAppDispatch()
   const {links} = useAppSelector((store) => store.links)
   const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -49,8 +52,9 @@ export default function CustomizeLinks() {
   const addNewLink = () => {
     dispatch(addLink({
       id:uuid(),
-      link:'',
-      platform:'github'
+      url:'',
+      platform:'github',
+      userid:session?.userId as string
     }))
   }
 

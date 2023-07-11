@@ -60,7 +60,7 @@ model VerificationToken {
 }
 
 model Link {
-  id String @id @default(cuid())
+  id String @id @default(cuid()) 
   platform String
   url    String
   user User @relation(fields: [userid], references: [id])

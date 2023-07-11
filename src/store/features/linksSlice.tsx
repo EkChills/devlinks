@@ -1,12 +1,14 @@
 import { selectedLinks } from '@/lib/selected-links';
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 import {v4 as uuid} from 'uuid'
+import { string } from 'zod';
 
 export interface Link {
   id:string;
   platform:string;
-  link:string;
-  url?: string;
+  // link:string;
+  url: string;
+  userid:string;
 }
 
 export type SelectedLink = {
@@ -21,7 +23,7 @@ export interface InitialState {
 }
 
 const links:Link[] = [
-  {id:uuid(), link:'', platform:''}
+  {id:uuid(), url:'', platform:'', userid:''}
 ]
 
 const initialState:InitialState = {
@@ -50,7 +52,7 @@ const linksSlice = createSlice({
     handleLinkChange:(state:InitialState, action:PayloadAction<{link:{id:string}, linkValue:string}>) => {
       const linkText =  state.links.find((link) => link.id === action.payload.link.id)
       if(linkText) {
-        linkText.link = action.payload.linkValue
+        linkText.url = action.payload.linkValue
         return
       }
       throw new Error('link text is undefined')

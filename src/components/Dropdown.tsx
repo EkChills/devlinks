@@ -32,8 +32,8 @@ const Dropdown = ({imagePath, id, platform}:Props) => {
           {selectedLinks.map((link) => (
             <div key={link.id} className="py-[.75rem] border-b border-[#D9D9D9] flex items-center hover:cursor-pointer" onClick={() => dispatch(handleSelectChange({link:{id:id!},platform:link.label}))}>
               <div className="flex items-center space-x-[.75rem]">
-                <Image src={link.image} width={16} height={16} alt={link.label} />
-                <span className={`font-medium text-base text-[#333333] ${selectedLink.label.trim().toLowerCase() === link.label.trim().toLowerCase() && 'text-[#633CFF]'}`}>{link.label}</span>
+                <Image src={link.image} width={16} height={16} alt={link.label} className={`${platform.trim().toLowerCase() === link.label.trim().toLowerCase() ? 'fill-[#633CFF]' : 'fill-[#333333]'}`} />
+                <span className={`font-medium text-base  ${platform.trim().toLowerCase() === link.label.trim().toLowerCase() ? 'text-[#633CFF]' : 'text-[#333333]'}`}>{link.label}</span>
               </div>
             </div>
           ))}
