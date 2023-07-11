@@ -9,7 +9,7 @@ const DEFAULT_SIGN_OPTION:SignOption = {
 }
 
 export function signJwt(payload:JwtPayload, option = DEFAULT_SIGN_OPTION) {
-  const secret = process.env.JWT_SECRET
+  const secret = 'vuyhijfghjnjoighvblpokiutfryg'
   const token = jwt.sign(payload, secret!, option)
   return token
 }
