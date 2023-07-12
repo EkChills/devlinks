@@ -38,15 +38,13 @@ export default function CustomizeLinks() {
   console.log(links);
   
   const {data, isFetching, isLoading, isError} = useQuery({
-    queryKey:['jobs'],
+    queryKey:['links'],
     queryFn:async():Promise<{links:Link[]}> => {
       const res = await axios('/api/links')
       const data:{links:Link[]} = await res.data 
       dispatch(addLinks(data.links))
       return data
     },
-    cacheTime:Infinity,
-    staleTime:Infinity,
   })
 
   const addNewLink = () => {

@@ -5,6 +5,11 @@ import Dropdown from "./Dropdown";
 import InputElLink from "./InputElLink";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { FormLink } from "@/lib/types/formTypes";
+import axios from "axios";
+import { toast } from "./ui/use-toast";
+import { useState } from "react";
+import Image from "next/image";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   id:string;
@@ -17,6 +22,25 @@ interface Props {
 
 const SingleLink = ({id, platform, link, linkIndex, register, errors}:Props) => {
   const {selectedLink} = useAppSelector(store => store.links)  
+  const [isDeleting, setIsDeleting] = useState<boolean>(false)
+
+
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation(delLink => {
+    return axios.delete(`/api/links/${id}`)
+  }, 
+  {
+    onSuccess:() => {
+      queryClient.invalidateQueries('links' as any)
+    }
+  }
+  )
+
+  const removeLink = async() => {
+    mutation.mutate() 
+  }
+
   
   
   return (
@@ -26,7 +50,7 @@ const SingleLink = ({id, platform, link, linkIndex, register, errors}:Props) => 
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="6" fill="none" viewBox="0 0 12 6"><path fill="#737373" d="M0 0h12v1H0zM0 5h12v1H0z"/></svg>
         <p className="text-base font-bold text-[#737373]">Link {linkIndex}</p>
         </div>
-        <p className="text-base font-medium text-[#737373] hover:cursor-pointer">Remove</p>
+        { mutation.isLoading ? <Image src={'/images/del-spinner.svg'} width={20} height={20} alt="delete spinner" /> : <p className="text-base font-medium text-[#737373] hover:cursor-pointer" onClick={removeLink} >Remove</p>}
       </div>
     <Dropdown imagePath={selectedLink.image} id={id} platform={platform} />
     <InputElLink
