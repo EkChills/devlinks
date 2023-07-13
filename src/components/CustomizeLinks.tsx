@@ -101,7 +101,7 @@ export default function CustomizeLinks() {
           </div>
         </div>}
         { !isFetching && links.length === 0 ? <EmptyLinks /> : <AllLinks register={register} errors={errors} linkItems={data?.links as Link[]} />}
-        <div className='  border-[#D9D9D9] border-t-[0.0625rem] flex flex-col absolute left-[0] right-[0] mt-[1.5rem] py-[1rem] xl:py-[1.5rem] sm:px-[2.5rem] px-[1.5rem] justify-center' >
+        <div className='  border-[#D9D9D9] border-t-[0.0625rem] flex flex-col absolute left-[0] bottom-0 right-[0] mt-[1.5rem] py-[1rem] xl:py-[1.5rem] sm:px-[2.5rem] px-[1.5rem] justify-center' >
           <button disabled={links.length === 0 || isFetching || !isEditing} className='leading-[150%] rounded-[.5rem] bg-[#633CFF] text-base text-[white] font-semibold py-[.69rem] w-full text-center xl:ml-auto xl:w-auto xl:px-[1.69rem] disabled:opacity-[.25] flex items-center justify-center'>
         
             {isSaving ? <Image src={'/images/save-roll.svg'} width={20} height={20} alt='spinner' /> :
