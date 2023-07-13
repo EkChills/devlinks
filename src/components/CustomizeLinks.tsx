@@ -3,7 +3,7 @@
 import { Link, SelectedLink, addLink, addLinks, setEditing } from '@/store/features/linksSlice'
 import { store } from '@/store/store'
 import React, { useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAppDispatch, useAppSelector } from '@/store/typedHooks'
 import axios from 'axios'
 import EmptyLinks from './EmptyLinks'
@@ -16,7 +16,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from './ui/use-toast'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
+
 import { authOptions } from '@/lib/authOptions'
+import { ClimbingBoxLoader, HashLoader, PulseLoader } from 'react-spinners'
 
 const getLinks = async():Promise<{links:Link[]}> => {
   const res = await fetch('/api/links')
@@ -36,6 +38,8 @@ export default function CustomizeLinks() {
   const {links,  isEditing} = useAppSelector((store) => store.links)
   const [isSaving, setIsSaving] = useState<boolean>(false)
   console.log(links);
+  const queryClient = useQueryClient()
+
   
   const {data, isFetching, isLoading, isError} = useQuery({
     queryKey:['links'],
@@ -64,6 +68,7 @@ export default function CustomizeLinks() {
       const data = await res.data
       console.log(data);
       if(data) {
+        queryClient.invalidateQueries('links' as any)
         toast({
           title:'Success! Changes have been applied.'
         })
@@ -89,6 +94,12 @@ export default function CustomizeLinks() {
           <p className="leading-[150%] text-[#737373] font-medium text-base max-w-[18.4375rem] sm:max-w-[41rem]">Add/edit/remove links below and then share all your profiles with the world!</p>
         </div>
         <button className='mt-[2.5rem] text-base font-semibold hover:bg-[#EFEBFF] transition-colors duration-500 text-[#633CFF] leading-[150%] py-[.69rem] w-full rounded-[.5rem] text-center border border-[#633CFF] ' onClick={addNewLink}>Add new link</button>
+       {isLoading && <div className='items-center justify-center rounded-[.75rem] mt-[1.5rem] flex flex-col  pt-[3rem] pb-[3rem] space-y-[1.5rem]'>
+          <div className='flex items-center space-x-6'>
+          <h3 className='text-[1.5rem] font-semibold text-[#737373]'>Loading Links</h3>
+          <PulseLoader size={20} />
+          </div>
+        </div>}
         { !isFetching && links.length === 0 ? <EmptyLinks /> : <AllLinks register={register} errors={errors} linkItems={data?.links as Link[]} />}
         <div className='  border-[#D9D9D9] border-t-[0.0625rem] flex flex-col absolute left-[0] right-[0] mt-[1.5rem] py-[1rem] xl:py-[1.5rem] sm:px-[2.5rem] px-[1.5rem] justify-center' >
           <button disabled={links.length === 0 || isFetching || !isEditing} className='leading-[150%] rounded-[.5rem] bg-[#633CFF] text-base text-[white] font-semibold py-[.69rem] w-full text-center xl:ml-auto xl:w-auto xl:px-[1.69rem] disabled:opacity-[.25] flex items-center justify-center'>

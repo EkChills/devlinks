@@ -10,7 +10,7 @@ import { toast } from "./ui/use-toast";
 import { useState } from "react";
 import Image from "next/image";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { dropLink } from "@/store/features/linksSlice";
+import { Link, dropLink } from "@/store/features/linksSlice";
 
 interface Props {
   id:string;
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const SingleLink = ({id, platform, link, linkIndex, register, errors}:Props) => {
-  const {selectedLink} = useAppSelector(store => store.links)  
+  const {selectedLink, links} = useAppSelector(store => store.links)  
   const dispatch = useAppDispatch()
 
 
@@ -34,15 +34,25 @@ const SingleLink = ({id, platform, link, linkIndex, register, errors}:Props) => 
   {
     onSuccess:() => {
       queryClient.invalidateQueries('links' as any)
-    }
+    },
   }
   )
 
   const removeLink = async() => {
-    mutation.mutate() 
-    dispatch(dropLink(id))
+      const res = await axios(`/api/links`)
+      const linkData:{links:Link[]} = await res.data
+      
+      
+      const localLink = links.find((link) => link.id === id)
+      const foundLink = linkData.links.find((link) => link.url === localLink?.url)
+      if(foundLink) {
+        mutation.mutate() 
+        return
+      }
+      dispatch(dropLink(id))
   }
 
+  
   
   
   return (
