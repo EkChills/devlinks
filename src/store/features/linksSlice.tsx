@@ -20,6 +20,7 @@ export interface InitialState {
   links:Link[];
   selectedLink:SelectedLink;
   selectLinks:{id:string | number; image:string; label:string;}[]
+  isEditing?:boolean;
 }
 
 const links:Link[] = [
@@ -32,7 +33,8 @@ const initialState:InitialState = {
     image:'',
     label:''
   },
-selectLinks:selectedLinks
+selectLinks:selectedLinks,
+isEditing:false
 }
 
 
@@ -65,11 +67,17 @@ const linksSlice = createSlice({
         return
       }
       throw new Error('link text is undefined')
+    },
+    setEditing:(state:InitialState, action:PayloadAction<boolean>) => {
+      state.isEditing = action.payload
+    },
+    dropLink:(state:InitialState, action:PayloadAction<string>) =>{
+      state.links = state.links.filter((link) => link.id !== action.payload)
     }
   },
 }
 )
 
-export const {addLinks, addLink, handleLinkChange, setSelectedLink, handleSelectChange} = linksSlice.actions
+export const {addLinks, addLink, handleLinkChange, setSelectedLink, handleSelectChange, setEditing, dropLink} = linksSlice.actions
 
 export default linksSlice.reducer

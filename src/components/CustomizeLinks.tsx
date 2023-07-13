@@ -1,6 +1,6 @@
 "use client"
 
-import { Link, SelectedLink, addLink, addLinks } from '@/store/features/linksSlice'
+import { Link, SelectedLink, addLink, addLinks, setEditing } from '@/store/features/linksSlice'
 import { store } from '@/store/store'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
@@ -33,7 +33,7 @@ export default function CustomizeLinks() {
   const {register,handleSubmit, formState:{errors}} = useForm()
   const {data:session, status} = useSession()
   const dispatch = useAppDispatch()
-  const {links} = useAppSelector((store) => store.links)
+  const {links,  isEditing} = useAppSelector((store) => store.links)
   const [isSaving, setIsSaving] = useState<boolean>(false)
   console.log(links);
   
@@ -76,6 +76,7 @@ export default function CustomizeLinks() {
       })
     } finally {
       setIsSaving(false)
+      dispatch(setEditing(false))
     }
   }
   
@@ -90,7 +91,7 @@ export default function CustomizeLinks() {
         <button className='mt-[2.5rem] text-base font-semibold hover:bg-[#EFEBFF] transition-colors duration-500 text-[#633CFF] leading-[150%] py-[.69rem] w-full rounded-[.5rem] text-center border border-[#633CFF] ' onClick={addNewLink}>Add new link</button>
         { !isFetching && links.length === 0 ? <EmptyLinks /> : <AllLinks register={register} errors={errors} linkItems={data?.links as Link[]} />}
         <div className='  border-[#D9D9D9] border-t-[0.0625rem] flex flex-col absolute left-[0] right-[0] mt-[1.5rem] py-[1rem] xl:py-[1.5rem] sm:px-[2.5rem] px-[1.5rem] justify-center' >
-          <button disabled={links.length === 0} className='leading-[150%] rounded-[.5rem] bg-[#633CFF] text-base text-[white] font-semibold py-[.69rem] w-full text-center xl:ml-auto xl:w-auto xl:px-[1.69rem] disabled:opacity-[.25] flex items-center justify-center'>
+          <button disabled={links.length === 0 || isFetching || !isEditing} className='leading-[150%] rounded-[.5rem] bg-[#633CFF] text-base text-[white] font-semibold py-[.69rem] w-full text-center xl:ml-auto xl:w-auto xl:px-[1.69rem] disabled:opacity-[.25] flex items-center justify-center'>
         
             {isSaving ? <Image src={'/images/save-roll.svg'} width={20} height={20} alt='spinner' /> :
             'Save' }

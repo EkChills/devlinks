@@ -1,6 +1,6 @@
 "use client"
 
-import { useAppSelector } from "@/store/typedHooks";
+import { useAppDispatch, useAppSelector } from "@/store/typedHooks";
 import Dropdown from "./Dropdown";
 import InputElLink from "./InputElLink";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
@@ -10,6 +10,7 @@ import { toast } from "./ui/use-toast";
 import { useState } from "react";
 import Image from "next/image";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { dropLink } from "@/store/features/linksSlice";
 
 interface Props {
   id:string;
@@ -22,7 +23,7 @@ interface Props {
 
 const SingleLink = ({id, platform, link, linkIndex, register, errors}:Props) => {
   const {selectedLink} = useAppSelector(store => store.links)  
-  const [isDeleting, setIsDeleting] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
 
 
   const queryClient = useQueryClient()
@@ -39,6 +40,7 @@ const SingleLink = ({id, platform, link, linkIndex, register, errors}:Props) => 
 
   const removeLink = async() => {
     mutation.mutate() 
+    dispatch(dropLink(id))
   }
 
   
