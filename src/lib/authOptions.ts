@@ -50,8 +50,12 @@ export const authOptions:AuthOptions = {
     strategy:"jwt"
   },
   callbacks: {
-    async jwt({ token, account, user }) {
+    async jwt({ token, account, user, trigger, session }) {
+      console.log(session);
       
+      if(trigger === 'update'){
+        token.image = session.image
+      }
       // Persist the OAuth access_token to the token right after signin
       if (account) {
         token.accessToken = account.access_token
@@ -67,7 +71,7 @@ export const authOptions:AuthOptions = {
       
       session.accessToken = token.accessToken as string
       session.userId  = token.id as string
-      
+      session.user.image = token.image as string
       return session
     }
   },

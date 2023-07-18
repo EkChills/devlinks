@@ -1,4 +1,5 @@
 import { Toaster } from '@/components/ui/toaster'
+import "@uploadthing/react/styles.css";
 import './globals.css'
 import { Inter, Instrument_Sans } from 'next/font/google'
 import ReduxProvider from '@/components/providers/ReduxTProvider'

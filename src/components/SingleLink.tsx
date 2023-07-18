@@ -34,6 +34,10 @@ const SingleLink = ({id, platform, link, linkIndex, register, errors}:Props) => 
   {
     onSuccess:() => {
       queryClient.invalidateQueries('links' as any)
+      dispatch(dropLink(id))
+      toast({
+        title:"Link Deleted! ✨"
+      })
     },
   }
   )

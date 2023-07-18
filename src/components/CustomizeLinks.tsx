@@ -19,6 +19,7 @@ import { useSession } from 'next-auth/react'
 
 import { authOptions } from '@/lib/authOptions'
 import { ClimbingBoxLoader, HashLoader, PulseLoader } from 'react-spinners'
+import LinkError from './LinkError'
 
 const getLinks = async():Promise<{links:Link[]}> => {
   const res = await fetch('/api/links')
@@ -37,19 +38,27 @@ export default function CustomizeLinks() {
   const dispatch = useAppDispatch()
   const {links,  isEditing} = useAppSelector((store) => store.links)
   const [isSaving, setIsSaving] = useState<boolean>(false)
-  console.log(links);
   const queryClient = useQueryClient()
 
   
-  const {data, isFetching, isLoading, isError} = useQuery({
+  const {data, isFetching, isLoading, isError, error, status:stats} = useQuery({
     queryKey:['links'],
     queryFn:async():Promise<{links:Link[]}> => {
-      const res = await axios('/api/links')
-      const data:{links:Link[]} = await res.data 
-      dispatch(addLinks(data.links))
-      return data
+      try {
+        const res = await axios('/api/links')
+        const data:{links:Link[]} = await res.data 
+        console.log(data);
+        dispatch(addLinks(data.links))
+        return data
+      } catch (error) {
+        console.log(error);
+        
+        throw new Error('Failed to fetch data');
+      }
+
     },
-  })
+    retryDelay:Infinity
+  },)
 
   const addNewLink = () => {
     dispatch(addLink({
@@ -84,8 +93,10 @@ export default function CustomizeLinks() {
       dispatch(setEditing(false))
     }
   }
-  
-  
+console.log(error, isLoading);
+
+
+
 
   return (
     <form className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem] flex-[1.3] min-h-[calc(100vh-6rem)] relative" onSubmit={handleSubmit(onSubmit)}>
@@ -95,12 +106,13 @@ export default function CustomizeLinks() {
         </div>
         <button className='mt-[2.5rem] text-base font-semibold hover:bg-[#EFEBFF] transition-colors duration-500 text-[#633CFF] leading-[150%] py-[.69rem] w-full rounded-[.5rem] text-center border border-[#633CFF] ' onClick={addNewLink}>Add new link</button>
        {isLoading && <div className='items-center justify-center rounded-[.75rem] mt-[1.5rem] flex flex-col  pt-[3rem] pb-[3rem] space-y-[1.5rem]'>
-          <div className='flex items-center space-x-6'>
-          <h3 className='text-[1.5rem] font-semibold text-[#737373]'>Loading Links</h3>
-          <PulseLoader size={20} />
+          <div className='flex items-center space-x-4'>
+          <h3 className='text-[1.1rem] font-semibold text-[#737373]'>Loading Links</h3>
+          <PulseLoader size={16} color='#737373' />
           </div>
         </div>}
-        { !isFetching && links.length === 0 ? <EmptyLinks /> : <AllLinks register={register} errors={errors} linkItems={data?.links as Link[]} />}
+        {isError && <LinkError />}
+        { !error && !isLoading && links.length === 0 ? <EmptyLinks /> : <AllLinks register={register} errors={errors} linkItems={data?.links as Link[]} />}
         <div className='  border-[#D9D9D9] border-t-[0.0625rem] flex flex-col absolute left-[0] bottom-0 right-[0] mt-[1.5rem] py-[1rem] xl:py-[1.5rem] sm:px-[2.5rem] px-[1.5rem] justify-center' >
           <button disabled={links.length === 0 || isFetching || !isEditing} className='leading-[150%] rounded-[.5rem] bg-[#633CFF] text-base text-[white] font-semibold py-[.69rem] w-full text-center xl:ml-auto xl:w-auto xl:px-[1.69rem] disabled:opacity-[.25] flex items-center justify-center'>
         

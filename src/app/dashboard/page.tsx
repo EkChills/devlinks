@@ -2,15 +2,10 @@
 
 import CustomizeLinks from "@/components/CustomizeLinks"
 import DesktopLinkPrev from "@/components/DesktopLinkPrev"
-import axios from "axios"
-
-interface Props {
-
-}
 
 
 
-const Page = ({}:Props) => {
+const Dashboard = () => {
   return (
     <div className="px-[1rem] sm:px-[1.5rem] pt-[6rem] pb-[1.5rem]">
       <div className="xl:flex xl:space-x-[1.5rem]">
@@ -21,4 +16,4 @@ const Page = ({}:Props) => {
   )
 }
 
-export default Page
+export default Dashboard
