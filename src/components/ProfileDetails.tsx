@@ -38,10 +38,16 @@ export default function ProfileDetails() {
       const res = await axios.patch(`/api/profile`, {email:data.email})
       const updatedUser = await res.data
       console.log(updatedUser);
+      update({
+        email:data.email,
+        image:imageLink
+      })
       toast({
         title:'success profile updated!😀'
       })
     } catch (error) {
+      console.log(error);
+      
       toast({
         title:'couldnt save profile'
       })
