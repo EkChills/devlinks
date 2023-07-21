@@ -45,20 +45,29 @@ export async function POST (req:NextRequest) {
     const reformedLinks = [...links]
     console.log(reformedLinks);
     
-    const deletedLinks = await prisma.link.deleteMany({
-      where:{
-        user:{
-          id:session.userId
-        }
-      }
-    })
+    // const deletedLinks = await prisma.link.deleteMany({
+    //   where:{
+    //     user:{
+    //       id:session.userId
+    //     }
+    //   }
+    // })
 
-    const postedLinks = await prisma.link.createMany({
-      data:[
-        ...reformedLinks
-      ]
-    })
+    // const postedLinks = await prisma.link.createMany({
+    //   data:[
+    //     ...reformedLinks
+    //   ]
+    // })
 
+      const [deletedLinks, postedLinks] = await prisma.$transaction([
+        prisma.link.deleteMany({where:{user:{id:session.userId}}}),
+        prisma.link.createMany({
+          data:[
+            ...links
+          ]
+        })
+
+      ])
     // const [deleted, posted] = await Promise.allSettled([deletedLinks, postedLinks])
     // console.log(deleted)
     // console.log(posted);

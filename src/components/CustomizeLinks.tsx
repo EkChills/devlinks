@@ -20,6 +20,7 @@ import { useSession } from 'next-auth/react'
 import { authOptions } from '@/lib/authOptions'
 import { ClimbingBoxLoader, HashLoader, PulseLoader } from 'react-spinners'
 import LinkError from './LinkError'
+import DragContext from './providers/DragContext'
 
 const getLinks = async():Promise<{links:Link[]}> => {
   const res = await fetch('/api/links')
@@ -100,6 +101,19 @@ console.log(error, isLoading);
 
   return (
     <form className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem] flex-[1.3] min-h-[calc(100vh-6rem)] relative" onSubmit={handleSubmit(onSubmit)}>
+      <DragContext onDragEnd={(result) => {
+        console.log(result.source.index);
+        
+            if (!result.destination) {
+              return;
+          }
+          const newItems = [...links];
+          const [removed] = newItems.splice(result.source.index, 1);
+          newItems.splice(result.destination.index, 0, removed);
+          dispatch(addLinks(newItems))
+
+          // setItems(newItems)
+      }}>
         <div className="flex flex-col space-y-[.5rem]">
           <h3 className="text-[#333333] font-bold leading-[150%] text-[1.5rem] sm:text-[2rem]">Customize your links</h3>
           <p className="leading-[150%] text-[#737373] font-medium text-base max-w-[18.4375rem] sm:max-w-[41rem]">Add/edit/remove links below and then share all your profiles with the world!</p>
@@ -120,6 +134,7 @@ console.log(error, isLoading);
             'Save' }
           </button>
         </div>
+        </DragContext>
       </form>
   )
 }

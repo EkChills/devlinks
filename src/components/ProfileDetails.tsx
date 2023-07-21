@@ -14,23 +14,45 @@ import { ProfileEmail, ProfileSchema } from "@/lib/types/formTypes";
 
 export default function ProfileDetails() {
   const {data:session, update} = useSession()
-  const {register, handleSubmit, formState:{errors}} = useForm({resolver:zodResolver(ProfileSchema)})
+  const {register, handleSubmit, formState:{errors}} = useForm<ProfileEmail>({resolver:zodResolver(ProfileSchema)})
+  const [isSaving, setIsSaving] = useState<boolean>(false)
+  const [emailText, setEmailText] = useState<string | null>('')
   const [imageLink, setImageLink] =useState<string | null | undefined>(session?.user.image)
   console.log(imageLink);
   console.log(session);
 
   useEffect(() => {
     setImageLink(session?.user.image)
-  }, [session?.user.image])
+    if(session) {
+      setEmailText(session?.user.email)
+
+    }
+  }, [session?.user.image, emailText, session])
+  console.log(emailText);
   
-  const submitHandler:SubmitHandler<ProfileEmail | FieldValues> =(data) => {
+  
+  const submitHandler:SubmitHandler<ProfileEmail | FieldValues> =async(data) => {
     console.log(data.email);
-    
+    try {
+      setIsSaving(true)
+      const res = await axios.patch(`/api/profile`, {email:data.email})
+      const updatedUser = await res.data
+      console.log(updatedUser);
+      toast({
+        title:'success profile updated!😀'
+      })
+    } catch (error) {
+      toast({
+        title:'couldnt save profile'
+      })
+    } finally{
+      setIsSaving(false)
+    }
   }
   
 
   return (
-    <form className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem] flex-[1.3] min-h-[calc(100vh-6rem)] relative" onSubmit={handleSubmit(submitHandler)}>
+    <form className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem] flex-[1.3] min-h-[calc(100vh-6rem)] relative " onSubmit={handleSubmit(submitHandler)}>
       <div className="flex flex-col space-y-[.5rem]">
         <h3 className="text-[#333333] font-bold leading-[150%] text-[1.5rem] sm:text-[2rem]">
           Profile Details
@@ -132,8 +154,16 @@ export default function ProfileDetails() {
       </div>
       <div className="w-full flex flex-col space-y-4 sm:space-y-0  mt-[2.5rem] sm:flex-row p-[1.25rem] rounded-[.75rem] bg-[#FAFAFA] sm:items-center sm:space-x-[2rem]">
         <label htmlFor="email_input" className="font-medium text-[#737373] leading-[150%] sm:w-[15rem]">Email</label>
-        <input type="email" {...register("email", {required:true})} className="px-[1rem] py-[.75rem] rounded-[.5rem] border border-[#D9D9D9] w-full focus:border-[#633CFF] focus-within:border-[#633CFF] outline-none focus:shadow-sm focus:shadow-[#633CFF]" />
+        {session?.user.email && <input type="email"   {...register("email", {required:true, value:session.user.email})} className={`px-[1rem] py-[.75rem] rounded-[.5rem] border ${errors.email ? 'border-[#FF3939]' : 'border-[#D9D9D9]'}  w-full focus:border-[#633CFF] focus-within:border-[#633CFF] outline-none focus:shadow-sm focus:shadow-[#633CFF]`} />}
       </div>
+
+      <div className='  border-[#D9D9D9] border-t-[0.0625rem] flex flex-col absolute left-[0] sm:bottom-0 right-[0] mt-[1.5rem] py-[1rem] xl:py-[1.5rem] sm:px-[2.5rem] px-[1.5rem] justify-center' >
+          <button disabled={false} className='leading-[150%] rounded-[.5rem] bg-[#633CFF] text-base text-[white] font-semibold py-[.69rem] w-full text-center xl:ml-auto xl:w-auto xl:px-[1.69rem] disabled:opacity-[.25] flex items-center justify-center'>
+        
+            {isSaving ? <Image src={'/images/save-roll.svg'} width={20} height={20} alt='spinner' /> :
+            'Save' }
+          </button>
+        </div>
       
     </form>
   );
