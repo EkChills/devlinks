@@ -131,7 +131,7 @@ export default function ProfileDetails() {
                   image:res![res?.length! - 1].fileUrl
                 })
                 const uploadedData:User= await upload.data
-                update({image:uploadedData.image})
+                update({email:session?.user.email, image:uploadedData.image, })
                 setImageLink(uploadedData.image)
                 console.log(uploadedData);
                 
