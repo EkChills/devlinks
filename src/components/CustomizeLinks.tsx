@@ -100,7 +100,7 @@ console.log(error, isLoading);
 
 
   return (
-    <form className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem] flex-[1.3] min-h-[calc(100vh-6rem)] relativez" onSubmit={handleSubmit(onSubmit)}>
+    <form className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem] flex-[1.3] min-h-[calc(100vh-6rem)] relative" onSubmit={handleSubmit(onSubmit)}>
       <DragContext onDragEnd={(result) => {
         console.log(result.source.index);
         
