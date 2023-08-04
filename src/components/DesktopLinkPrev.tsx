@@ -22,9 +22,9 @@ export default function DesktopLinkPrev() {
             </div>
             <div>
             <p className="mt-[1.56rem] text-[2rem] mx-auto font-bold text-[#333333] leading-[150%] capitalize text-center mb-[0.5rem]">{session?.user.email?.split('@')[0]}</p>
-            <p className="font-medium text-base text-[#737373]">{session?.user.email}</p>
+            <p className="font-medium text-base text-[#737373] truncate">{session?.user.email}</p>
             </div>
-            <div className="flex flex-col space-y-2 w-full">
+            <div className="flex flex-col space-y-2 w-full mt-[3.2rem]">
               {
                 links.map((link) => {
                   const {platform} = link
