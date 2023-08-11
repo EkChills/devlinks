@@ -54,8 +54,7 @@ export const authOptions:AuthOptions = {
       console.log(session);
       
       if(trigger === 'update'){
-        token.image = session.image
-        token.email = session.email
+        return {...token, ...session.user}
       }
       // Persist the OAuth access_token to the token right after signin
       if (account) {

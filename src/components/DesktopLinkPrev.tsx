@@ -10,6 +10,8 @@ import ColoredLink from "./ColoredLink";
 export default function DesktopLinkPrev() {
   const {data:session} = useSession()
   const {links} = useAppSelector((store) => store.links)
+  console.log(session?.user);
+  
   // const [linksPrev, setLinksPrev] = useState()
   return (
     <div className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem]  hidden xl:flex xl:items-center xl:justify-center flex-1 max-h-screen xl:fixed xl:w-[40%]">
