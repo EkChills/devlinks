@@ -38,9 +38,12 @@ export default function ProfileDetails() {
       const res = await axios.patch(`/api/profile`, {email:data.email})
       const updatedUser = await res.data
       console.log(updatedUser);
-      update({
-        email:data.email,
-        image:imageLink
+      await update({
+        ...session,
+        user:{
+          ...session!.user,
+          email:data.email
+        }
       })
       toast({
         title:'success profile updated!😀'
@@ -100,7 +103,7 @@ export default function ProfileDetails() {
                     ...session,
                     user:{
                       ...session!.user,
-                      Image:uploadedData.image
+                      Image:imageLink
                     }
                   })
                   
@@ -138,9 +141,15 @@ export default function ProfileDetails() {
                   image:res![res?.length! - 1].fileUrl
                 })
                 const uploadedData:User= await upload.data
-                update({email:session?.user.email, image:uploadedData.image, })
                 setImageLink(uploadedData.image)
-                console.log(uploadedData);
+                session!.user.image = uploadedData.image
+                await update({
+                  ...session,
+                  user:{
+                    ...session!.user,
+                    Image:imageLink
+                  }
+                })
                 
                 console.log("Files: ", res);
                 // setImageUrl(res![res?.length! - 1].fileUrl)
