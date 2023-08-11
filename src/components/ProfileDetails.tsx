@@ -58,7 +58,7 @@ export default function ProfileDetails() {
   
 
   return (
-    <form className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem] flex-[1.3] min-h-[calc(100vh-6rem)] relative " onSubmit={handleSubmit(submitHandler)}>
+    <form className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem] flex-[1.3] min-h-[calc(100vh-6rem)] relative xl:overflow-y-scroll xl:max-h-screen w-full xl:left-[41%]   xl:fixed  xl:max-w-[56%]" onSubmit={handleSubmit(submitHandler)}>
       <div className="flex flex-col space-y-[.5rem]">
         <h3 className="text-[#333333] font-bold leading-[150%] text-[1.5rem] sm:text-[2rem]">
           Profile Details

@@ -7,6 +7,8 @@ import { Link } from "@/store/features/linksSlice"
 
 export async function GET () {
   const session = await getServerSession(authOptions)
+  console.log(session);
+  
   
   
   try {

@@ -100,7 +100,7 @@ console.log(error, isLoading);
 
 
   return (
-    <form className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem] flex-[1.3] min-h-[calc(100vh-6rem)] relative" onSubmit={handleSubmit(onSubmit)}>
+    <form className=" bg-white rounded-lg shadow-sm p-[1.5rem] sm:p-[2.5rem] flex-[1.3] min-h-[calc(100vh-6rem)] xl:overflow-y-scroll xl:max-h-screen w-full xl:left-[41%]   xl:fixed  xl:max-w-[56%]" onSubmit={handleSubmit(onSubmit)}>
       <DragContext onDragEnd={(result) => {
         console.log(result.source.index);
         
@@ -127,7 +127,8 @@ console.log(error, isLoading);
         </div>}
         {isError && <LinkError />}
         { !error && !isLoading && links.length === 0 ? <EmptyLinks /> : <AllLinks register={register} errors={errors} linkItems={data?.links as Link[]} />}
-        <div className='  border-[#D9D9D9] border-t-[0.0625rem] flex flex-col absolute left-[0] bottom-0 right-[0] mt-[1.5rem] py-[1rem] xl:py-[1.5rem] sm:px-[2.5rem] px-[1.5rem] justify-center' >
+        {/* {<hr className='absolute inset-x-[-1rem]' />} */}
+        <div className='  border-[#D9D9D9] border-t-[0.0625rem] flex flex-col absolute left-[0] bottom-0 right-[0] xl:relative py-[1rem] xl:py-[1.5rem] sm:px-[2.5rem] px-[1.5rem] justify-center' >
           <button disabled={links.length === 0 || isFetching || !isEditing} className='leading-[150%] rounded-[.5rem] bg-[#633CFF] text-base text-[white] font-semibold py-[.69rem] w-full text-center xl:ml-auto xl:w-auto xl:px-[1.69rem] disabled:opacity-[.25] flex items-center justify-center'>
         
             {isSaving ? <Image src={'/images/save-roll.svg'} width={20} height={20} alt='spinner' /> :

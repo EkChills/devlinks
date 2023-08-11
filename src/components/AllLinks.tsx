@@ -20,7 +20,7 @@ const AllLinks = ({linkItems, register, errors}:Props) => {
   return (
     <Droppable droppableId="link-items">
       {(provided) => (
-        <div {...provided.droppableProps} ref={provided.innerRef} className=" rounded-[.75rem] mt-[1.5rem] flex flex-col  pt-[3rem] pb-[3rem] space-y-[1.5rem]">
+        <div {...provided.droppableProps} ref={provided.innerRef} className=" rounded-[.75rem] mt-[1.5rem] flex flex-col  pt-[3rem] pb-[3rem] space-y-[1.5rem] xl:pb-[5rem]">
         {links.map((linkItem, index) => {
           const {id, platform, url} = linkItem 
           
