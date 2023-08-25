@@ -63,8 +63,8 @@ const LoginInputs = () => {
 
   async function signGoogle(){
     try {
-      const callback = await signIn('google')
-      router.push('/dashboard')
+      const callback = await signIn('google', { callbackUrl: 'https://devlinks-eosin.vercel.app/dashboard' })
+      // router.push('/dashboard')
     } catch (error) {
       
     }
