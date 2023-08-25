@@ -64,12 +64,7 @@ const LoginInputs = () => {
   async function signGoogle(){
     try {
       const callback = await signIn('google')
-      if(callback?.ok || !callback?.error) {
-        router.push('/dashboard')
-        return toast({
-          title:"logged in successfully"
-        })
-      }
+      router.push('/dashboard')
     } catch (error) {
       
     }
