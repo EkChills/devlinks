@@ -63,7 +63,7 @@ const LoginInputs = () => {
 
   async function signGoogle(){
     try {
-      const callback = await signIn('google')
+      const callback = await signIn('google', {redirect:false})
       if(callback?.error) {
         console.log(callback.error);
         
