@@ -62,15 +62,8 @@ const LoginInputs = () => {
   };
 
   async function signGoogle(){
-    try {
-      const callback = await signIn('google', { callbackUrl: 'https://devlinks-eosin.vercel.app/dashboard' })
-      if(callback?.ok) {
-        router.push('/dashboard')
-
-      }
-    } catch (error) {
+      signIn('google', { callbackUrl: 'https://devlinks-eosin.vercel.app/dashboard' })
       
-    }
   }
 
   return (
