@@ -62,7 +62,17 @@ const LoginInputs = () => {
   };
 
   async function signGoogle(){
-   signIn('google')
+    try {
+      const callback = await signIn('google')
+      if(callback?.ok || !callback?.error) {
+        router.push('/dashboard')
+        return toast({
+          title:"logged in successfully"
+        })
+      }
+    } catch (error) {
+      
+    }
   }
 
   return (
