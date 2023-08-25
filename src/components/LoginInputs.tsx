@@ -62,7 +62,31 @@ const LoginInputs = () => {
   };
 
   async function signGoogle(){
-   signIn('google')
+    try {
+      const callback = await signIn('google', {redirect:false})
+      if(callback?.error) {
+        console.log(callback.error);
+        
+       return toast({
+          title:"something went wrong"
+        })
+      }
+
+      if(callback?.ok || !callback?.error) {
+        router.push('/dashboard')
+      }
+      
+
+        
+    } catch (error) {
+      toast({
+        title:"something went wrong"
+      })
+      console.log(error);
+      
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
