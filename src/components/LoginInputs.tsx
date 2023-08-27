@@ -62,7 +62,7 @@ const LoginInputs = () => {
   };
 
   async function signGoogle(){
-      signIn('google', { callbackUrl: 'https://devlinks-eosin.vercel.app/dashboard' })
+      signIn('google', { callbackUrl: 'https://devlinks-eosin.vercel.app' })
       
   }
 
@@ -96,7 +96,7 @@ const LoginInputs = () => {
       >
         {isLoading ? <PuffLoader color="#ffffff" size={20} /> : "Login"}
       </button>
-      <div onClick={signGoogle} className={cn('flex items-center border border-gray-500 rounded-[.5rem] justify-center min-h-[2.875rem] group space-x-3 hover:bg-slate-700 transition-all duration-300 cursor-pointer')}>
+      <div onClick={signGoogle} className={cn('flex items-center border border-gray-500 rounded-[.5rem] justify-center min-h-[2.875rem] group space-x-3 hover:bg-slate-700 transition-all duration-300 cursor-pointer select-none active:brightness-150')}>
         <FcGoogle className="text-[2rem]" />
         <p className="font-semibold group-hover:text-white">Sign in with Google</p>
       </div>
